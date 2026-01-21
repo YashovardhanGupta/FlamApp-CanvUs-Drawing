@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 
 // Initialize socket outside the hook to prevent multiple connections on re-renders
 // In a real app, you might use a Context or Singleton pattern, but this works for simple cases.
-const socket = io.connect("http://localhost:3001");
+const socket = io.connect(import.meta.env.VITE_SERVER_URL || "http://localhost:3001");
 
 export const useSocket = (name, color) => {
     const [users, setUsers] = useState([]);
