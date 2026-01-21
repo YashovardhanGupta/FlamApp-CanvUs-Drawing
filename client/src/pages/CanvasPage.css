@@ -1,0 +1,186 @@
+/* CanvasPage.css */
+
+/* Main Page Container - Centers the board on the screen */
+.page-container {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--brand-blue);
+    /* Assuming brand-blue is defined in index.css */
+    overflow: hidden;
+}
+
+/* Watermark Text */
+.watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.03);
+    pointer-events: none;
+    z-index: 5;
+    user-select: none;
+}
+
+/* The Drawing Board - The white paper area */
+.board-container {
+    position: relative;
+    width: 96vw;
+    height: 92vh;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    /* Keeps canvas inside rounded corners */
+}
+
+/* The actual HTML5 Canvas element */
+.drawing-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+}
+
+/* --- Active User List (Top Right) --- */
+.user-list {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    pointer-events: none;
+    /* Let clicks pass through to canvas if needed, though mostly empty space */
+}
+
+.user-item {
+    padding: 6px 14px;
+    border-radius: 20px;
+    background-color: rgba(230, 230, 230, 0.4);
+    backdrop-filter: blur(4px);
+    font-weight: bold;
+    font-size: 0.9rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* --- Left Toolbar (Undo/Redo/Clear) --- */
+.toolbar-left {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    padding: 16px 8px;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    /* Toolbar styling usually handled by .toolbar class in global css, 
+     but specialized placement is here */
+}
+
+.divider {
+    width: 100%;
+    height: 1px;
+    background-color: #555;
+    margin: 8px 0;
+}
+
+/* --- Bottom Toolbar (Tools) --- */
+.toolbar-bottom {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    z-index: 10;
+    overflow: visible;
+    /* Allows popup menus to show */
+    display: flex;
+    gap: 12px;
+}
+
+.tool-wrapper {
+    position: relative;
+}
+
+.tool-btn-label {
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+    font-size: 0.75rem;
+}
+
+/* --- Tool Configuration Menu (Popup) --- */
+.tool-menu {
+    position: absolute;
+    bottom: 120%;
+    /* Pushes it above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #172554;
+    /* Dark blue */
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: white;
+}
+
+.menu-brush {
+    min-width: 140px;
+}
+
+.menu-eraser {
+    min-width: 120px;
+}
+
+.menu-label {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.size-slider {
+    width: 100%;
+    cursor: pointer;
+}
+
+/* Color Grid */
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.color-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.1s;
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+}
+
+.color-swatch.active {
+    border: 2px solid white;
+}
+
+.color-swatch.inactive {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
