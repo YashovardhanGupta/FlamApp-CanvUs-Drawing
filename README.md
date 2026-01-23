@@ -32,7 +32,7 @@ This project is set up to run with a single command from the root directory.
 3.  Enter a name when prompted (e.g., "User 1" and "User 2").
 4.  Start drawing in one window!
     - **Expected**: The drawing should appear instantly in the other window.
-    - **Online Count**: Check the "Online Users" count in the navbar; it should update as you join/leave.
+    - **Online Count**: Check the "Online Users" count in the navbar; it should update as you join/leave. (Future Work)
 
 ## ⚠️ Known Limitations & Bugs
 
