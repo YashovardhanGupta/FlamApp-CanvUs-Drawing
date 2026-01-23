@@ -4,19 +4,7 @@
 
 The application follows a **Client-Server-Client** broadcast model using WebSockets.
 
-```mermaid
-sequenceDiagram
-    participant UserA as 🎨 Client A
-    participant Server as 🖥️ Node Server
-    participant UserB as 👀 Client B
-
-    Note over UserA: User draws a stroke
-    UserA->>UserA: 1. Draw to local Canvas (Immediate Feedback)
-    UserA->>Server: 2. Emit 'draw_line' {points, color, width}
-    Server->>Server: 3. Add to In-Memory History
-    Server->>UserB: 4. Broadcast 'draw_line'
-    UserB->>UserB: 5. Render stroke on Canvas
-```
+![High-Level Data Flow](client\src\assets\canvus-dataflow-diagram.png)
 
 ## 2. WebSocket Protocol (Socket.io)
 
