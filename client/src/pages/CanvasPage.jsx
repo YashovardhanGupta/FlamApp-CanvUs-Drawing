@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Brush, Eraser, Undo, Redo, Trash2, ChevronUp } from 'lucide-react';
+import { Brush, Eraser, Undo, Redo, Trash2, ChevronUp, Navigation } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useSocket } from '../hooks/useSocket';
 import { useDraw } from '../hooks/useDraw';
@@ -26,6 +26,33 @@ const CanvasPage = () => {
 
   // 3. UI State
   const [activeMenu, setActiveMenu] = useState(null);
+  const [cursors, setCursors] = useState({});
+
+  // 4. Cursor Tracking
+  React.useEffect(() => {
+    // Listen for remote cursors
+    socket.on('cursor_move', (data) => {
+      // data = { x, y, name, color }
+      setCursors(prev => ({
+        ...prev,
+        [data.name]: data
+      }));
+    });
+
+    return () => {
+      socket.off('cursor_move');
+    };
+  }, [socket]);
+
+  const handleMouseMove = (e) => {
+    // Emit strictly drawing-related moves is in useDraw, but for general cursor over board:
+    // We only care if over the board for visuals
+    const boardRect = canvasRef.current.getBoundingClientRect();
+    const x = e.clientX - boardRect.left;
+    const y = e.clientY - boardRect.top;
+
+    socket.emit('cursor_move', { x, y, name, color });
+  };
 
   // --- UI Helpers ---
 
@@ -59,7 +86,39 @@ const CanvasPage = () => {
       <div className="watermark">CANVUS</div>
 
       {/* The White Drawing Board */}
-      <div className="board-container">
+      <div className="board-container" onMouseMove={handleMouseMove}>
+
+        {/* Remote Cursors Layer */}
+        {Object.values(cursors).filter(c => c.name !== name).map((cursor) => (
+          <div key={cursor.name}
+            style={{
+              position: 'absolute',
+              left: cursor.x,
+              top: cursor.y,
+              pointerEvents: 'none',
+              zIndex: 50,
+              transition: 'top 0.1s linear, left 0.1s linear' // Smooth movement
+            }}
+          >
+            <Navigation
+              size={20}
+              fill={cursor.color}
+              color={cursor.color}
+              style={{ transform: 'rotate(270deg)' }}
+            />
+            <span style={{
+              background: cursor.color,
+              color: '#fff',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              fontSize: '10px',
+              marginLeft: '4px',
+              whiteSpace: 'nowrap'
+            }}>
+              {cursor.name}
+            </span>
+          </div>
+        ))}
 
         {/* Active User List */}
         <div className="user-list">

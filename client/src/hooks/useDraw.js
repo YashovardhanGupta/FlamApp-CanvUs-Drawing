@@ -55,6 +55,9 @@ export const useDraw = (socket, initialColor) => {
                 const last = points.length - 1;
                 const secondLast = points.length - 2;
                 ctx.quadraticCurveTo(points[secondLast].x, points[secondLast].y, points[last].x, points[last].y);
+            } else if (points.length === 2) {
+                // For simple 2-point lines (real-time segments)
+                ctx.lineTo(points[1].x, points[1].y);
             }
             ctx.stroke();
         };
@@ -81,6 +84,11 @@ export const useDraw = (socket, initialColor) => {
         // Attach Listeners
         socket.on('load_canvas', handleLoadCanvas);
         socket.on('draw_line', handleDrawLine);
+        socket.on('drawing_move', (data) => {
+            // data = { from, to, color, width }
+            const { from, to, color, width } = data;
+            drawLine({ points: [from, to], color, width });
+        });
         socket.on('redraw_canvas', handleRedraw);
         socket.on('clear_canvas', handleClear);
 
@@ -109,10 +117,25 @@ export const useDraw = (socket, initialColor) => {
         if (!isDrawing) return;
         const { offsetX, offsetY } = nativeEvent;
 
+        // Draw locally
         ctxRef.current.lineTo(offsetX, offsetY);
         ctxRef.current.stroke();
 
+        // Add to local history
         currentStroke.current.push({ x: offsetX, y: offsetY });
+
+        // Stream points to others for real-time effect
+        // We send the LAST point and the CURRENT point to draw a segment
+        const points = currentStroke.current;
+        if (points.length >= 2) {
+            const lastPoint = points[points.length - 2];
+            socket.emit('drawing_move', {
+                from: lastPoint,
+                to: { x: offsetX, y: offsetY },
+                color: tool === 'eraser' ? '#ffffff' : brushColor,
+                width: tool === 'eraser' ? eraserSize : brushSize
+            });
+        }
     };
 
     const stopDrawing = () => {

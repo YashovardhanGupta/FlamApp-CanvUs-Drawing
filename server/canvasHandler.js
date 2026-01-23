@@ -31,6 +31,17 @@ module.exports = (io, socket) => {
     socket.broadcast.emit('draw_line', data);
   });
 
+  // Handle Real-time Drawing Move
+  socket.on('drawing_move', (data) => {
+    socket.broadcast.emit('drawing_move', data);
+  });
+
+  // Handle Cursor Move
+  socket.on('cursor_move', (data) => {
+    // data = { x, y, name, color }
+    socket.broadcast.emit('cursor_move', data);
+  });
+
   // 3. Handle Undo
   socket.on('undo', () => {
     const newHistory = drawingStore.undo();

@@ -31,6 +31,8 @@ We define a minimal set of events to keep overhead low.
 | `redo` | Client → Server | `null` | Request to redo the last undone action. |
 | `redraw_canvas` | Server → Client | `Array<Line>` | Sent after an Undo/Redo/Clear to force clients to repaint the whole state. |
 | `update_users` | Server → Client | `Array<User>` | List of currently connected users for the UI counter. |
+| `drawing_move` | Bidirectional | `{ from, to, color, width }` | Transient real-time stroke segment. Broadcast to others for immediate visual feedback. |
+| `cursor_move` | Bidirectional | `{ x, y, name, color }` | Real-time cursor position for presence. Broadcast to others. |
 
 ## 3. Undo/Redo Strategy (Global State)
 
@@ -62,3 +64,8 @@ We chose **JS Map** and **Arrays** in Node.js memory instead of a database (Mong
 *   We emit `draw_line` generally on `mouseup` (stroke completion) or in larger chunks, rather than emitting every single `mousemove` pixel.
 *   **Benefit**: drastically reduces network packet overhead.
 *   **Client-Side Smoothing**: We use **Quadratic Curve** interpolation (`ctx.quadraticCurveTo`) on the client. This allows us to send fewer coordinate points over the network while still rendering smooth, round curves locally.
+*   **Real-time Previews**: To ensure responsiveness, we now also emit `drawing_move` events for the *current* stroke being drawn. This allows other users to see the stroke progress in real-time, even before it's "committed" to the history. These real-time segments are transient visuals.
+
+## 6. Cursor Tracking
+*   **Real-time Presence**: We broadcast cursor positions (`cursor_move`) to create a sense of presence.
+*   **Visuals**: Remote cursors are rendered as a purely visual layer on top of the canvas, with the user's name and color. The DOM updates are smoothed with CSS transitions.
