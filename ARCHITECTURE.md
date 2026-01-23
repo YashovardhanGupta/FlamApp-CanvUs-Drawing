@@ -1,4 +1,4 @@
-# 🏗️ Architecture Documentation
+# Architecture Documentation
 
 ## 1. High-Level Data Flow
 
