@@ -1,10 +1,10 @@
-# 🏗️ Architecture Documentation
+# Architecture Documentation
 
 ## 1. High-Level Data Flow
 
 The application follows a **Client-Server-Client** broadcast model using WebSockets.
 
-![High-Level Data Flow](client\src\assets\canvus-dataflow-diagram.png)
+![High-Level Data Flow](client/src/assets/canvus-dataflow-diagram.png)
 
 ## 2. WebSocket Protocol (Socket.io)
 

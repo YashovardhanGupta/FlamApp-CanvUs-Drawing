@@ -1,8 +1,8 @@
-# 🎨 FlamApp CanvUs Drawing
+# FlamApp CanvUs Drawing
 
 A real-time collaborative whiteboard application built with the MERN stack (well, MER... since it uses in-memory storage for speed!). Multiple users can draw on the same canvas simultaneously with instant synchronization.
 
-## 🚀 Setup Instructions
+## Setup Instructions
 
 This project is set up to run with a single command from the root directory.
 
@@ -25,7 +25,7 @@ This project is set up to run with a single command from the root directory.
     - **Frontend**: http://localhost:5173
     - **Backend**: http://localhost:3001
 
-## 🧪 How to Test with Multiple Users
+## How to Test with Multiple Users
 
 1.  Open the application in your primary browser window (http://localhost:5173).
 2.  Open a **New Incognito Window** (or a different browser) and navigate to the same URL.
@@ -34,7 +34,7 @@ This project is set up to run with a single command from the root directory.
     - **Expected**: The drawing should appear instantly in the other window.
     - **Online Count**: Check the "Online Users" count in the navbar; it should update as you join/leave. (Future Work)
 
-## ⚠️ Known Limitations & Bugs
+## Known Limitations & Bugs
 
 -   **Persistence**: The current version uses **in-memory storage** (server-side RAM) to store line history.
     -   *Impact*: If the server restarts or crashes, the drawing board is wiped clean. This was a design choice for low-latency performance during the prototype phase.
@@ -44,7 +44,7 @@ This project is set up to run with a single command from the root directory.
     -   *Impact*: Extremely fast mouse movements might occassionally look "pointy" before the curve algorithm catches up on the final stroke.
 -   **Race Conditions**: Rare conflict if two users modify exactly the same pixel coordinate at the precise millisecond (though `canvas` generally handles this by layering 'last write wins').
 
-## ⏱️ Time Spent
+## Time Spent
 
 **Total Time**: ~3 Days
 
