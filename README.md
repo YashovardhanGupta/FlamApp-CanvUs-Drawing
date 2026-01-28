@@ -61,3 +61,13 @@ This project is set up to run with a single command from the root directory.
     *   Refactoring code into Custom Hooks (`useDraw`, `useSocket`) for cleaner architecture.
     *   Adding "Online Users" tracking.
     *   Deployment attempts and documentation.
+
+## Snapshots of the Project
+
+**Landing page:**
+![landing-page](client/src/assets/screenshots/landingPage.png)
+
+**Canvas Page:**
+![canvas-page](client/src/assets/screenshots/canvasPage.png)
+
+
